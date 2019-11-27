@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { withBadge } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -7,7 +7,9 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { Container, Logo } from './styles';
 import logo from '../../assets/images/logo.png';
 
-function Header({ navigation, cartSize }) {
+function Header({ navigation }) {
+  const cartSize = useSelector(state => state.cart.length);
+
   const BadgeIcon = withBadge(cartSize || '0', {
     badgeStyle: {
       backgroundColor: '#7159c1',
@@ -18,7 +20,6 @@ function Header({ navigation, cartSize }) {
   return (
     <Container>
       <Logo source={logo} />
-      {/* <Icon name="shopping-basket" size={26} color="#fff" /> */}
       <BadgeIcon
         onPress={() => navigation.navigate('Cart')}
         name="shopping-basket"
@@ -29,8 +30,4 @@ function Header({ navigation, cartSize }) {
   );
 }
 
-export default withNavigation(
-  connect(state => ({
-    cartSize: state.cart.length,
-  }))(Header)
-);
+export default withNavigation(Header);
